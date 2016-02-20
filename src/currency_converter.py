@@ -36,7 +36,6 @@ def win32_unicode_argv():
 
 
 def load_json_data(currency_from, currency_or_currencies_to):
-
     import urllib2
 
     string_of_currencies = ""
@@ -97,67 +96,82 @@ if len(sys.argv) > 4:
     input_amount = float(sys.argv[2])
     currency_from = sys.argv[4]
 
-    # Currencies with known symbols, some of them are modified due to the same symbols
-    currencies = {'EUR': '€', 'KRW': 'KR₩', 'VND': '₫', 'BOB': '$b', 'VEF': 'Bs', 'ISK': 'ikr', 'BYR': 'p.',
-                  'JMD': 'J$', 'DKK': 'dkr', 'SRD': 'SR$', 'AUD': 'A$', 'ZAR': 'ZS', 'CUP': '₱', 'NGN': '₦',
-                  'CRC': '₡', 'MZN': 'MT', 'SYP': 'SY£', 'ANG': 'ƒ', 'BRL': 'R$', 'BSD': 'BS$', 'MKD': 'ден',
-                  'SHP': 'SH£', 'BGN': 'Bлв', 'SGD': 'SG$', 'CNY': 'C¥', 'ARS': 'AR$', 'TTD': 'TT$', 'SCR': 'S₨',
-                  'SBD': 'SB$', 'GTQ': 'Q', 'PKR': 'P₨', 'PEN': 'S/.', 'LVL': 'Ls', 'UAH': '₴', 'LRD': 'LR$',
-                  'RON': 'rkr', 'COP': 'CO$', 'NPR': 'N₨', 'SOS': 'SS', 'FKP': 'F£', 'LKR': 'L₨', 'JPY': '¥',
-                  'KYD': 'KY$', 'TWD': 'NT$', 'IRR': '﷼', 'AFN': '؋', 'SVC': 'SV$', 'PLN': 'zł', 'PYG': 'Gs',
-                  'ILS': '₪', 'KPW': 'KP₩', 'GIP': 'G£', 'BND': 'BN$', 'HNL': 'L', 'CZK': 'Kč', 'HUF': 'Ft',
-                  'IDR': 'Rp', 'LTL': 'Lt', 'RUB': 'руб', 'RSD': 'Дин.', 'NAD': 'NA$', 'PAB': 'B/.', 'DOP': 'RD$',
-                  'ALL': 'Lek', 'HRK': 'kn', 'KHR': '៛', 'PHP': '₱', 'XCD': 'X$', 'KZT': 'Kлв', 'FJD': 'F$',
-                  'BAM': 'KM', 'EGP': 'E£', 'QAR': '﷼', 'OMR': '﷼', 'KGS': 'Kлв', 'MXN': 'M$', 'MYR': 'RM',
-                  'YER': '﷼', 'SAR': '﷼', 'UYU': '$U', 'GBP': '£', 'UZS': 'Uлв', 'AWG': 'ƒ', 'MNT': '₮',
-                  'THB': '฿', 'LAK': '₭', 'BBD': 'BB$', 'SEK': 'skr', 'USD': '$', 'ERN': 'nfk', 'BZD': 'BZ$',
-                  'NZD': 'N$', 'GYD': 'GY$', 'HKD': 'HK$'}
+    if len(currency_from) < 4:
+        # Currencies with known symbols, some of them are modified due to the same symbols
+        currencies = {'EUR': '€', 'KRW': 'KR₩', 'VND': '₫', 'BOB': '$b', 'VEF': 'Bs', 'ISK': 'ikr', 'BYR': 'p.',
+                      'JMD': 'J$', 'DKK': 'dkr', 'SRD': 'SR$', 'AUD': 'A$', 'ZAR': 'ZS', 'CUP': '₱', 'NGN': '₦',
+                      'CRC': '₡', 'MZN': 'MT', 'SYP': 'SY£', 'ANG': 'ƒ', 'BRL': 'R$', 'BSD': 'BS$', 'MKD': 'ден',
+                      'SHP': 'SH£', 'BGN': 'Bлв', 'SGD': 'SG$', 'CNY': 'C¥', 'ARS': 'AR$', 'TTD': 'TT$', 'SCR': 'S₨',
+                      'SBD': 'SB$', 'GTQ': 'Q', 'PKR': 'P₨', 'PEN': 'S/.', 'LVL': 'Ls', 'UAH': '₴', 'LRD': 'LR$',
+                      'RON': 'rkr', 'COP': 'CO$', 'NPR': 'N₨', 'SOS': 'SS', 'FKP': 'F£', 'LKR': 'L₨', 'JPY': '¥',
+                      'KYD': 'KY$', 'TWD': 'NT$', 'IRR': '﷼', 'AFN': '؋', 'SVC': 'SV$', 'PLN': 'zł', 'PYG': 'Gs',
+                      'ILS': '₪', 'KPW': 'KP₩', 'GIP': 'G£', 'BND': 'BN$', 'HNL': 'L', 'CZK': 'Kč', 'HUF': 'Ft',
+                      'IDR': 'Rp', 'LTL': 'Lt', 'RUB': 'руб', 'RSD': 'Дин.', 'NAD': 'NA$', 'PAB': 'B/.', 'DOP': 'RD$',
+                      'ALL': 'Lek', 'HRK': 'kn', 'KHR': '៛', 'PHP': '₱', 'XCD': 'X$', 'KZT': 'Kлв', 'FJD': 'F$',
+                      'BAM': 'KM', 'EGP': 'E£', 'QAR': '﷼', 'OMR': '﷼', 'KGS': 'Kлв', 'MXN': 'M$', 'MYR': 'RM',
+                      'YER': '﷼', 'SAR': '﷼', 'UYU': '$U', 'GBP': '£', 'UZS': 'Uлв', 'AWG': 'ƒ', 'MNT': '₮',
+                      'THB': '฿', 'LAK': '₭', 'BBD': 'BB$', 'SEK': 'skr', 'USD': '$', 'ERN': 'nfk', 'BZD': 'BZ$',
+                      'NZD': 'N$', 'GYD': 'GY$', 'HKD': 'HK$'}
 
-    for currency, symbol in currencies.iteritems():
-        if currency_from == unicode(symbol, "utf-8"):
-            currency_from = currency
-
-    result = make_frame(input_amount, currency_from)
-
-    if len(sys.argv) > 6:
-        currency_to = sys.argv[6]
         for currency, symbol in currencies.iteritems():
-            if currency_to == unicode(symbol, "utf-8"):
-                currency_to = currency
-        convert_rate_from_json = load_json_data(currency_from, currency_to)
-        output_amount = convert_currency(input_amount, None, convert_rate_from_json)
-        add_currency(result, currency_to, output_amount)
+            if currency_from == unicode(symbol, "utf-8"):
+                currency_from = currency
+
+        result = make_frame(input_amount, currency_from)
+
+        if len(sys.argv) > 6:
+            currency_to = sys.argv[6]
+
+            for currency, symbol in currencies.iteritems():
+                if currency_to == unicode(symbol, "utf-8"):
+                    currency_to = currency
+
+            convert_rate_from_json = load_json_data(currency_from, currency_to)
+            if cmp(convert_rate_from_json['query']['results']['rate']['Rate'], "N/A") != 0:
+                output_amount = convert_currency(input_amount, None, convert_rate_from_json)
+                add_currency(result, currency_to, output_amount)
+
+                print_output(result)
+            else:
+                print "Incorrect name of input or output currency. Didn't mach any of existing currencies."
+        else:
+            # All known currencies from http://finance.yahoo.com/
+            currencies_to_convert = ["EUR", "KRW", "VND", "BOB", "MOP", "BDT", "MDL", "VEF", "GEL", "ISK",
+                                     "BYR", "THB", "MXV", "TND", "JMD", "DKK", "SRD", "BWP", "NOK", "MUR",
+                                     "AZN", "INR", "MGA", "CAD", "XAF", "LBP", "SRD", "XDR", "IDR", "IEP",
+                                     "AUD", "MMK", "LYD", "ZAR", "IQD", "XPF", "TJS", "CUP", "UGX", "NGN",
+                                     "PGK", "TOP", "TMT", "KES", "CRC", "MZN", "SYP", "ANG", "ZMW", "BRL",
+                                     "BSD", "NIO", "GNF", "BMD", "SLL", "MKD", "BIF", "LAK", "BHD", "SHP",
+                                     "BGN", "SGD", "CNY", "ARS", "TTD", "SCR", "BBD", "SBD", "MAD", "GTQ",
+                                     "MWK", "PKR", "ITL", "PEN", "AED", "LVL", "UAH", "FRF", "LRD", "LSL",
+                                     "SEK", "RON", "XOF", "COP", "CDF", "TZS", "SRD", "GHS", "NPR", "ZWL",
+                                     "SOS", "DZD", "FKP", "LKR", "JPY", "CHF", "KYD", "CLP", "IRR", "AFN",
+                                     "DJF", "SVC", "PLN", "PYG", "ERN", "ETB", "ILS", "TWD", "KPW", "SIT",
+                                     "GIP", "BND", "HNL", "CZK", "HUF", "BZD", "DEM", "JOD", "IDR", "RWF",
+                                     "LTL", "RUB", "RSD", "WST", "NAD", "PAB", "DOP", "ALL", "HTG", "HKD",
+                                     "AMD", "KMF", "MRO", "HRK", "ECS", "KHR", "PHP", "CYP", "KWD", "XCD",
+                                     "CNH", "SDG", "CLF", "KZT", "TRY", "FJD", "NZD", "BAM", "BTN", "STD",
+                                     "VUV", "MVR", "AOA", "EGP", "QAR", "OMR", "CVE", "KGS", "MXN", "MYR",
+                                     "GYD", "SZL", "YER", "SAR", "UYU", "GBP", "UZS", "GMD", "AWG", "RWF",
+                                     "MNT", "USD"]
+
+            convert_rates_from_json = load_json_data(currency_from, currencies_to_convert)
+
+            if cmp(convert_rates_from_json['query']['results']['rate'][0]['Rate'], "N/A") != 0:
+
+                current_currency_in_list = 0
+                for currency in currencies_to_convert:
+                    if cmp(currency, currency_from) == 0:
+                        continue
+                    output_amount = convert_currency(input_amount, current_currency_in_list, convert_rates_from_json)
+                    add_currency(result, currency, output_amount)
+                    current_currency_in_list += 1
+
+                print_output(result)
+            else:
+                print "Incorrect name of input currency. Didn't mach any of existing currencies."
     else:
-        # All known currencies from http://finance.yahoo.com/
-        currencies_to_convert = ["EUR", "KRW", "VND", "BOB", "MOP", "BDT", "MDL", "VEF", "GEL", "ISK",
-                                 "BYR", "THB", "MXV", "TND", "JMD", "DKK", "SRD", "BWP", "NOK", "MUR",
-                                 "AZN", "INR", "MGA", "CAD", "XAF", "LBP", "SRD", "XDR", "IDR", "IEP",
-                                 "AUD", "MMK", "LYD", "ZAR", "IQD", "XPF", "TJS", "CUP", "UGX", "NGN",
-                                 "PGK", "TOP", "TMT", "KES", "CRC", "MZN", "SYP", "ANG", "ZMW", "BRL",
-                                 "BSD", "NIO", "GNF", "BMD", "SLL", "MKD", "BIF", "LAK", "BHD", "SHP",
-                                 "BGN", "SGD", "CNY", "ARS", "TTD", "SCR", "BBD", "SBD", "MAD", "GTQ",
-                                 "MWK", "PKR", "ITL", "PEN", "AED", "LVL", "UAH", "FRF", "LRD", "LSL",
-                                 "SEK", "RON", "XOF", "COP", "CDF", "TZS", "SRD", "GHS", "NPR", "ZWL",
-                                 "SOS", "DZD", "FKP", "LKR", "JPY", "CHF", "KYD", "CLP", "IRR", "AFN",
-                                 "DJF", "SVC", "PLN", "PYG", "ERN", "ETB", "ILS", "TWD", "KPW", "SIT",
-                                 "GIP", "BND", "HNL", "CZK", "HUF", "BZD", "DEM", "JOD", "IDR", "RWF",
-                                 "LTL", "RUB", "RSD", "WST", "NAD", "PAB", "DOP", "ALL", "HTG", "HKD",
-                                 "AMD", "KMF", "MRO", "HRK", "ECS", "KHR", "PHP", "CYP", "KWD", "XCD",
-                                 "CNH", "SDG", "CLF", "KZT", "TRY", "FJD", "NZD", "BAM", "BTN", "STD",
-                                 "VUV", "MVR", "AOA", "EGP", "QAR", "OMR", "CVE", "KGS", "MXN", "MYR",
-                                 "GYD", "SZL", "YER", "SAR", "UYU", "GBP", "UZS", "GMD", "AWG", "RWF",
-                                 "MNT", "USD"]
-
-        convert_rates_from_json = load_json_data(currency_from, currencies_to_convert)
-        current_currency_in_list = 0
-        for currency in currencies_to_convert:
-            if cmp(currency, currency_from) == 0:
-                continue
-            output_amount = convert_currency(input_amount, current_currency_in_list, convert_rates_from_json)
-            add_currency(result, currency, output_amount)
-            current_currency_in_list += 1
-
-    print_output(result)
+        print "Incorrect format of input currency"
 else:
     print "Missing command line arguments"
 
